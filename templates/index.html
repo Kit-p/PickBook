@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Home - PickBook
+{% endblock %}
+
+{% block style %}
+<style>
+  html, body {
+    height: 100%;
+  }
+  body {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    text-align: center;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+  <form action="/login" method="post" class="form-signin m-auto">
+    <h1>
+      PickBook
+      <h6 class="mb-5">online book review system</h6>
+    </h1>
+    <h4 class="mt-1 mb-3">Please sign up / sign in</h4>
+    <label class="float-left" for="inputUsername">Username:</label>
+    <input id="inputUsername" name="username" type="text" required="" autofocus="" class="form-control mb-2">
+    <label class="float-left" for="inputPassword">Password:</label>
+    <input id="inputPassword" name="password" type="password" required="" class="form-control mb-5">
+    <button formaction="/register" class="btn btn-lg btn-primary mt-3 mr-5" type="submit">Sign up</button>
+    <button class="btn btn-lg btn-primary mt-3 ml-5" type="submit">Sign in</button>
+  </form>
+{% endblock %}
