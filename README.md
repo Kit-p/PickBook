@@ -19,6 +19,10 @@ This project intends to build a web application that allows users to search for 
 
 # Files
 
+**`books.csv`**  
+This is the initial records of books.  
+It contains 5000 entries of books with `isbn`, `title`, `author`, and `year`.  
+
 **`import.py`**  
 This is the `.py` file that creates necessary relational tables.  
 It reads data from `.csv` file and insert them into the corresponding table.  
@@ -26,3 +30,27 @@ It reads data from `.csv` file and insert them into the corresponding table.
 - Created `import.py`
 - Created 3 relational tables `reader`, `book`, and `review`
 - Read data from `books.csv` and insert them into the table `book`.
+
+**`layout.html`**  
+This is the template for all other `.html` files.  
+It contains basic structure of a HTML page.  
+
+**`success.html`**  
+This is the template for all Success messages.  
+It displays a simple page with the variable `message`.  
+It greets the user with the corresponding variable `username`.  
+
+**`error.html`**  
+This is the template for all Error messages.  
+It displays a simple page with the variable `message`.  
+It describes the error leading to this page.  
+
+**`index.html`**  
+This is the default login page.  
+It allows user to register or login with username and password.  
+It makes `POST` request to url_for('register') or url_for('login').  
+It verifies account duplication or invalid credentials by `application.py`.  
+*----------Tasks Accomplished----------*  
+- Users can register with username and password
+- Users can login with a password
+

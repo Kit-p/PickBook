@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Error - PickBook
+{% endblock %}
+
+{% block style %}
+<style>
+  html, body {
+    height: 100%;
+  }
+  body {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: top;
+    align-items: top;
+  }
+  body > .container {
+    margin-top: 10%;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h3 class="ml-5">Error:</h3>
+  <br/>
+  <h1 class="mb-5 text-center">{{ message }}</h1>
+  <a href="{{ url_for('index') }}" class="mt-5 btn btn-lg btn-primary btn-block" role="button">Back to previous page</a>
+</div>
+{% endblock %}
