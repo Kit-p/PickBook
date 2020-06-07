@@ -1,0 +1,4 @@
+requirements.txt
+.vscode/*
+__pycache__/*
+flask_session/*
