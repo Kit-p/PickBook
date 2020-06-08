@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home - PickBook
+{% endblock %}
+
+{% block style %}
+<style>
+  html, body {
+    height: 100%;
+  }
+
+  .main-content {
+    min-height: 90%;
+  }
+
+  .navbar {
+    height: 10%;
+    background-color: rgb(255, 250, 205, 0.9);
+  }
+
+  .navbar-brand {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  #search-bar {
+    padding-top: 5%;
+  }
+</style>
+{% endblock %}
+
+{% block navbar %}
+  <li class="breadcrumb-item active" aria-current="page">Home</li>
+{% endblock %}
+
+{% block body %}
+  <form id="search-bar" action="{{ url_for('search') }}" method="GET">
+    <div class="form-group row mx-3 my-3">
+      <span class="col-lg-1"></span>
+      <label for="inputTitle" class="col-sm-1 col-form-label">Title</label>
+      <div class="col-lg-8 col-sm-1">
+        <input name="title" type="text" class="form-control" id="inputTitle" placeholder="Title">
+      </div>
+    </div>
+    <div class="form-group row mx-3 my-3">
+      <span class="col-lg-1"></span>
+      <label for="inputAuthor" class="col-sm-1 col-form-label">Author</label>
+      <div class="col-lg-8 col-sm-1">
+        <input name="author" type="text" class="form-control" id="inputAuthor" placeholder="Author">
+      </div>
+    </div>
+    <div class="form-group row mx-3 my-3">
+      <span class="col-lg-1"></span>
+      <label for="inputISBN" class="col-sm-1 col-form-label">ISBN</label>
+      <div class="col-lg-8 col-sm-1">
+        <input name="isbn" type="text" class="form-control" id="inputISBN" placeholder="ISBN">
+      </div>
+    </div>
+    <div class="form-group row mx-3 my-3">
+      <span class="col-lg-2"></span>
+      <button class="col-sm-8 mt-5 btn btn-lg btn-success btn-block" type="submit">Search</button>
+      <span class="col-lg-2"></span>
+    </div>
+  </form>
+{% endblock %}

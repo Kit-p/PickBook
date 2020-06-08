@@ -9,22 +9,33 @@ Error - PickBook
   html, body {
     height: 100%;
   }
+  
   body {
-    background-color: rgba(230, 170, 130, 0.85);
+    overflow-y: hidden;
+  }
+
+  .main-content {
+    min-height: 90%;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: top;
     align-items: top;
   }
-  body > .container {
+  .main-content > .container {
     margin-top: 10%;
+  }
+
+  .container > label {
+    font-size: 32px;
+    font-weight: bold;
+    color: red;
   }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="container">
-  <h3 class="ml-5">Error:</h3>
+  <label class="ml-5">Error:</label>
   <br/>
   <h1 class="mb-5 text-center">{{ message }}</h1>
   <a href="{{ url_for('logout') }}" class="mt-5 btn btn-lg btn-primary btn-block" role="button">Back to previous page</a>

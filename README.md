@@ -29,11 +29,12 @@ It reads data from `.csv` file and insert them into the corresponding table.
 *----------Tasks Accomplished----------*  
 - Created `import.py`
 - Created 3 relational tables `reader`, `book`, and `review`
-- Read data from `books.csv` and insert them into the table `book`.
+- Read data from `books.csv` and insert them into the table `book`
 
 **`layout.html`**  
 This is the template for all other `.html` files.  
 It contains basic structure of a HTML page.  
+It defines header for non-logged-in and logged-in pages.  
 
 **`success.html`**  
 This is the template for all Success messages.  
@@ -52,5 +53,16 @@ It makes `POST` request to url_for('register') or url_for('login').
 It verifies account duplication or invalid credentials by `application.py`.  
 *----------Tasks Accomplished----------*  
 - Users can register with username and password
-- Users can login with a password
+- Users can login with a username and password
+- Users logged in are redirected to `home.html`
+
+**`home.html`**  
+This is the home page after user logged in.  
+It allows user to search for books.  
+*----------Tasks Accomplished----------*  
+- Logged in users can logout
+- Logged in users can search for books
+  - by Title
+  - by Author
+  - by ISBN
 

@@ -20,6 +20,12 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+@app.before_first_request
+def init():
+  g.user = None
+  if "user_id" in session:
+    session.pop("user_id", None)
+
 @app.before_request
 def before_request():
   global db
@@ -95,4 +101,9 @@ def logout():
 def home():
   if g.user is None:
     return redirect(url_for('index'))
-  return render_template("success.html", message="Login successful!", username=g.user.username)
+  return render_template("home.html")
+
+@app.route("/home/search", methods=["GET"])
+def search():
+  pass
+

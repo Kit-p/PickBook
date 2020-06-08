@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Home - PickBook
+Login - PickBook
 {% endblock %}
 
 {% block style %}
@@ -9,29 +9,25 @@ Home - PickBook
   html, body {
     height: 100%;
   }
-  body {
-    background-color: rgba(200, 230, 130, 0.85);
+
+  .main-content {
+    min-height: 90%;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
     align-items: center;
     text-align: center;
-    padding-bottom: 10%;
   }
 </style>
 {% endblock %}
 
 {% block body %}
   <form action="{{ url_for('login') }}" method="post" class="form-signin m-auto">
-    <h1>
-      PickBook
-      <h6 class="mb-5">online book review system</h6>
-    </h1>
-    <h4 class="mt-1 mb-3">Please sign up / sign in</h4>
-    <label class="float-left" for="inputUsername">Username:</label>
-    <input id="inputUsername" name="username" type="text" required="" autofocus="" class="form-control mb-2">
-    <label class="float-left" for="inputPassword">Password:</label>
-    <input id="inputPassword" name="password" type="password" required="" class="form-control mb-5">
+    <h4 class="mb-3">Please sign up / sign in</h4>
+    <label class="float-left" for="inputUsername">Username</label>
+    <input id="inputUsername" name="username" type="text" required="" autofocus="" placeholder="username" class="form-control mb-2">
+    <label class="float-left" for="inputPassword">Password</label>
+    <input id="inputPassword" name="password" type="password" required="" placeholder="password" class="form-control mb-5">
     <button class="float-right btn btn-lg btn-primary mt-3 ml-5" type="ssubmit">Sign in</button>
     <button formaction="{{ url_for('register') }}" class="float-left btn btn-lg btn-primary mt-3 mr-5" type="submit">Sign up</button>
   </form>
