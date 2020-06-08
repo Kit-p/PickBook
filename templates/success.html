@@ -6,12 +6,7 @@ Success - PickBook
 
 {% block style %}
 <style>
-  html, body {
-    height: 100%;
-  }
   .main-content {
-    min-height: 90%;
-    background-color: rgba(200, 230, 130, 0.85);
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: top;
@@ -28,6 +23,6 @@ Success - PickBook
 <div class="container">
   <h1>{{ message }}</h1>
   <h1 class="mb-5">Welcome, <b>{{ username }}</b>!</h1>
-  <a href="{{ url_for('logout') }}" class="btn btn-lg btn-primary btn-block mr-5 mt-5" role="button">Back to previous page</a>
+  <a href="{{ url_for('index') }}" class="btn btn-lg btn-primary btn-block mr-5 mt-5" role="button">Back to previous page</a>
 </div>
 {% endblock %}

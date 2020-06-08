@@ -1,4 +1,4 @@
-<html>
+<html style="height: 100vh;">
   <head>
     <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
     {% block style %}
     {% endblock %}
   </head>
-  <body>
+  <body style="height: 100%;">
     {% if g.user.id is not defined %}
       <header style="height: 10%; padding: 5px 0px; background-color: rgba(255, 250, 205, 0.9);">
         <h1 class="text-center" style="font-size: 32px; font-weight: bold;">
@@ -18,8 +18,8 @@
         </h1>
       </header>
     {% else %}
-      <nav class="navbar navbar-expand-sm">
-        <a class="navbar-brand mr-5" href="#">PickBook</a>
+      <nav class="navbar navbar-expand-sm" style="height: 10%; background-color: rgb(255, 250, 205, 0.9);">
+        <a class="navbar-brand mr-5" style="color: black; font-size: 20px; font-weight: bold;" href="#">PickBook</a>
         <div class="collapse navbar-collapse ml-5">
           <ul class="navbar-nav mr-auto">
             {% block navbar %}
@@ -32,7 +32,7 @@
         <a class="btn btn-outline-danger" href="{{ url_for('logout') }}"role="button">Logout</a>
       </nav>
     {% endif %}
-    <div class="main-content" style="background-color: rgba(200, 230, 130, 0.2);">
+    <div class="main-content" style="min-height: 90%; background-color: rgba(200, 230, 130, 0.2);">
       {% block body %}
       {% endblock %}
     </div>

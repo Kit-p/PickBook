@@ -66,3 +66,12 @@ It allows user to search for books.
   - by Author
   - by ISBN
 
+**`search.html`**  
+This is the page displaying search results.  
+It links users to specific book details page.  
+Users can navigate between result pages.  
+*----------Tasks Accomplished----------*  
+- Display search results
+- Link users to specific book page
+- Handles all combination of search queries
+

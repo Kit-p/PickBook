@@ -52,8 +52,6 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
   if request.method == "GET":
-    if g.user is not None:
-      return redirect(url_for('home'))
     return redirect(url_for('index'))
 
   global db
@@ -69,8 +67,6 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
   if request.method == "GET":
-    if g.user is not None:
-      return redirect(url_for('home'))
     return redirect(url_for('index'))
 
   if g.user is not None:
@@ -105,5 +101,90 @@ def home():
 
 @app.route("/home/search", methods=["GET"])
 def search():
+  if g.user is None:
+    return redirect(url_for('index'))
+
+  global db
+  limit = 50
+  index = {}
+  page = {}
+  isbn = request.args.get("isbn", default="", type=str)
+  title = request.args.get("title", default="", type=str)
+  author = request.args.get("author", default="", type=str)
+  page["current"] = request.args.get("page", default=None, type=int)
+
+  if page["current"] is None:
+    return redirect(request.full_path + "&page=1")
+
+  offset = (page["current"]-1) * limit
+  index["low"] = offset + 1
+  books = None
+  sql_clause = " FROM book"
+  params = None
+
+  if title != "" or author != "" or isbn != "":
+    sql_clause += " WHERE "
+    params = {}
+    if isbn != "":
+      sql_clause += "isbn ~~* :isbn AND "
+      params["isbn"] = '%' + isbn.strip().replace('-', '').replace(' ', '') + '%'
+    if title != "":
+      sql_clause += "title ~~* :title AND "
+      params["title"] = '%' + title.strip() + '%'
+    if author != "":
+      sql_clause += "author ~~* :author AND "
+      params["author"] = '%' + author.strip() + '%'
+    sql_clause = sql_clause[:-5]
+
+  sql = "SELECT COUNT(id) AS total" + sql_clause + ';'
+
+  if params is not None:
+    index["total"] = db.execute(sql, params).fetchone().total
+  else:
+    index["total"] = db.execute(sql).fetchone().total
+
+  page["total"] = -(-index["total"] // limit) # round_up
+
+  if index["total"] == 0:
+    index["low"] = 0
+    page["total"] = 1
+
+  if title != "" or author != "" or isbn != "":
+    sql_clause += " ORDER BY "
+    if title != "":
+      sql_clause += "LENGTH(title), "
+    if author != "":
+      sql_clause += "LENGTH(author), "
+    if isbn != "":
+      sql_clause += "isbn, "
+    sql_clause = sql_clause[:-2]
+
+  sql = "SELECT id, title, author, isbn" + sql_clause + f" LIMIT {limit} OFFSET {offset};"
+
+  if params is not None:
+    books = db.execute(sql, params)
+  else:
+    books = db.execute(sql)
+
+  index["high"] = offset + books.rowcount
+
+  params = {}
+  params["title"] = title.strip()
+  params["author"] = author.strip()
+  params["isbn"] = isbn.strip()
+
+  urls = {}
+  base_url = request.full_path.rstrip("0123456789")
+  if page["current"] > 1:
+    urls["first"] = base_url + "1"
+    urls["previous"] = base_url + str(page["current"] - 1)
+  if page["current"] < page["total"]:
+    urls["next"] = base_url + str(page["current"] + 1)
+    urls["last"] = base_url + str(page["total"])
+
+  return render_template("search.html", page=page, index=index, books=books, params=params, urls=urls)
+
+@app.route("/home/book/<int:id>", methods=["GET"])
+def book(id):
   pass
 
