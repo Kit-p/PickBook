@@ -10,6 +10,7 @@ Success - PickBook
     height: 100%;
   }
   body {
+    background-color: rgba(200, 230, 130, 0.85);
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: top;
@@ -26,7 +27,6 @@ Success - PickBook
 <div class="container">
   <h1>{{ message }}</h1>
   <h1 class="mb-5">Welcome, <b>{{ username }}</b>!</h1>
-  <a href="{{ url_for('index') }}" class="btn btn-lg btn-primary mr-5 mt-5" role="button">Back to previous page</a>
-  <a href="{{ url_for('home') }}" class="btn btn-lg btn-primary ml-5 mt-5" role="button">Continue as current user</a>
+  <a href="{{ url_for('logout') }}" class="btn btn-lg btn-primary btn-block mr-5 mt-5" role="button">Back to previous page</a>
 </div>
 {% endblock %}

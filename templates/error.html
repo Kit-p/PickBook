@@ -10,6 +10,7 @@ Error - PickBook
     height: 100%;
   }
   body {
+    background-color: rgba(230, 170, 130, 0.85);
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: top;
@@ -26,6 +27,6 @@ Error - PickBook
   <h3 class="ml-5">Error:</h3>
   <br/>
   <h1 class="mb-5 text-center">{{ message }}</h1>
-  <a href="{{ url_for('index') }}" class="mt-5 btn btn-lg btn-primary btn-block" role="button">Back to previous page</a>
+  <a href="{{ url_for('logout') }}" class="mt-5 btn btn-lg btn-primary btn-block" role="button">Back to previous page</a>
 </div>
 {% endblock %}

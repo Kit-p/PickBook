@@ -10,11 +10,13 @@ Home - PickBook
     height: 100%;
   }
   body {
+    background-color: rgba(200, 230, 130, 0.85);
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
     align-items: center;
     text-align: center;
+    padding-bottom: 10%;
   }
 </style>
 {% endblock %}
@@ -30,7 +32,7 @@ Home - PickBook
     <input id="inputUsername" name="username" type="text" required="" autofocus="" class="form-control mb-2">
     <label class="float-left" for="inputPassword">Password:</label>
     <input id="inputPassword" name="password" type="password" required="" class="form-control mb-5">
-    <button formaction="{{ url_for(register) }}" class="btn btn-lg btn-primary mt-3 mr-5" type="submit">Sign up</button>
-    <button class="btn btn-lg btn-primary mt-3 ml-5" type="submit">Sign in</button>
+    <button class="float-right btn btn-lg btn-primary mt-3 ml-5" type="ssubmit">Sign in</button>
+    <button formaction="{{ url_for('register') }}" class="float-left btn btn-lg btn-primary mt-3 mr-5" type="submit">Sign up</button>
   </form>
 {% endblock %}
