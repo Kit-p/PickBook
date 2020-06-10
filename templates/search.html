@@ -105,7 +105,7 @@ Page {{ page["current"] }} - PickBook
       {% for book in books %}
         <tr style="transform: rotate(0);">
           <th scope="row">
-            <a class="stretched-link" href="{{ url_for('book', id=book.id) }}" target="_blank">
+            <a class="stretched-link" href="{{ url_for('book', book_id=book.id) }}">
               {{ loop.index0 + index["low"] }}
             </a>
           </th>

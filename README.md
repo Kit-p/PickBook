@@ -75,3 +75,10 @@ Users can navigate between result pages.
 - Link users to specific book page
 - Handles all combination of search queries
 
+**`book.html`**  
+This is the page displaying book details.  
+It contains reviews written for the specific book.  
+Users can write and submit new review here.  
+It contains Goodreads data for the specific book.  
+*----------Tasks Accomplished----------*  
+

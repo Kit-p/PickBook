@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ book.title }} - PickBook
+{% endblock %}
+
+{% block style %}
+<style>
+  #book-info > .card {
+    font-size: 16px;
+    background-color: rgba(120, 180, 220, 0.3);
+  }
+
+  #book-reviews {
+    font-size: 16px;
+    background-color: rgba(220, 160, 120, 0.3);
+  }
+
+  form .form-label {
+    font-size: 18px;
+    font-weight: bold;
+  }
+</style>
+{% endblock %}
+
+{% block navbar %}
+<li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+{% if referrer is defined %}
+  <li class="breadcrumb-item"><a href="{{ referrer }}">Search Results</a></li>
+{% endif %}
+<li class="breadcrumb-item active" aria-current="page">Book</li>
+{% endblock %}
+
+{% block body %}
+<h2>Book Information</h2>
+<div id="book-info" class="card-group">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">Details</h3>
+      <p class="card-text">
+        <b>Title:</b><br/>
+        {{ book.title }}
+      </p>
+      <p class="card-text">
+        <b>Author:</b><br/>
+        {{ book.author }}
+      </p>
+      <p class="card-text">
+        <b>Publication year:</b><br/>
+        {{ book.year }}
+      </p>
+      <p class="card-text">
+        <b>ISBN: </b><Br/>
+        {{ book.isbn }}
+      </p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">Goodreads Statistics</h3>
+        {% if goodreads_stats is defined %}
+          <p class="card-text">
+            <b>Number of Ratings:</b><br/>
+            {{ goodreads_stats["work_ratings_count"] }}
+          </p>
+          <p class="card-text">
+            <b>Average Rating:</b><br/>
+            {{ goodreads_stats["average_rating"] }}
+          </p>
+        {% else %}
+          <p class="card-text">
+            <b>Not available</b>
+          </p>
+        {% endif %}
+    </div>
+  </div>
+</div>
+<hr/>
+<h2>Book Reviews</h2>
+<div id="book-reviews" class="card">
+  <div class="card-body">
+    {% if reviews.rowcount == 0 %}
+      <h3 class="text-muted text-center">Currently no review available.</h3>
+      <h3 class="text-muted text-center">Write a review for this book!</h3>
+    {% else %}
+      <ul class="review-list list-group list-group-flush">
+        {% for review in reviews %}
+        <li class="review-item row">
+          {% if review.reader_id == g.user.id %}
+            <div id="current-user-review" class="review-author col-sm-1"><b><i>{{ review.username }}:</i></b></div>
+            <div class="review-content col-sm-11 list-group-item list-group-item-warning">
+          {% else %}
+            <div class="review-author col-sm-1"><b>{{ review.username }}:</b></div>
+            <div class="review-content col-sm-11 list-group-item list-group-item-secondary">
+          {% endif %}
+              <h5>Rating: {{ review.rating }}</h5>
+              {{ review.content }}
+            </div>
+          {% if not loop.last %}
+            <hr/>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+  <div class="card-footer">
+    {% if canSubmitReview %}
+      <form action="{{ url_for('book', book_id=book.id) }}" method="POST">
+        <fieldset class="form-group">
+          <label class="form-label d-block">Rating:</label>
+          {% for i in range(1,6) %}
+            <div class="form-check form-check-inline custom-control custom-radio custom-control-inline">
+              <input class="form-check-input custom-control-input" type="radio" name="rating" value="{{ i }}" required="" id="{{ 'rating-' ~ i|string }}">
+              <label class="form-check-label custom-control-label" for="{{ 'rating-' ~ i|string }}">{{ i }}</label>
+            </div>
+          {% endfor %}
+        </fieldset>
+        <div class="form-group">
+          <label class="form-label" for="content">Content:</label>
+          <textarea id="content" name="content" class="form-control" type="text" placeholder="Type your review here..."></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-success btn-lg btn-block">Submit</button>
+        </div>
+      </form>
+    {% else %}
+      <h4 class="text-center text-muted">You have already written a review for this book.</h4>
+      <h4 class="text-center text-muted">
+        Read your review (highlighted in yellow) <a href="#current-user-review" class="card-link">here</a>.
+      </h4>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

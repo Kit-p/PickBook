@@ -1,5 +1,7 @@
+import json
 import os
 
+import requests
 from flask import Flask, g, redirect, render_template, request, session, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -59,10 +61,16 @@ def register():
   password = request.form.get("password")
   users = db.execute("SELECT * FROM reader WHERE reader.username = :username", {"username": username})
   if users.rowcount != 0:
-    return render_template("error.html", message=f"The username '{username}' has been used!")
+    referrer = request.referrer
+    if referrer is None or referrer == "":
+      referrer = url_for('index')
+    return render_template("error.html", message=f"The username '{username}' has been used!", referrer=referrer)
   db.execute("INSERT INTO reader (username, password) VALUES (:username, :password)", {"username": username, "password": password})
   db.commit()
-  return render_template("success.html", message="Registration Successful!", username=username)
+  referrer = request.referrer
+  if referrer is None or referrer == "":
+    referrer = url_for('index')
+  return render_template("success.html", message="Registration Successful!", username=username, referrer=referrer)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -76,14 +84,17 @@ def login():
   username = request.form.get("username")
   password = request.form.get("password")
   users = db.execute("SELECT * FROM reader WHERE reader.username = :username", {"username": username})
+  referrer = request.referrer
+  if referrer is None or referrer == "":
+    referrer = url_for('index')
   if users.rowcount == 0:
-    return render_template("error.html", message="User does not exist!")
+    return render_template("error.html", message="User does not exist!", referrer=referrer)
   elif users.rowcount != 1: # Impossible to happen
-    return render_template("error.html", message="Duplicated users!")
+    return render_template("error.html", message="Duplicated users!", referrer=referrer)
   else:
     user = users.fetchone()
     if user.password != password:
-      return render_template("error.html", message="Incorrect password!")
+      return render_template("error.html", message="Incorrect password!", referrer=referrer)
     session["user_id"] = user.id
     return redirect(url_for('home'))
 
@@ -96,13 +107,13 @@ def logout():
 @app.route("/home", methods=["GET"])
 def home():
   if g.user is None:
-    return redirect(url_for('index'))
+    return redirect(url_for('logout'))
   return render_template("home.html")
 
 @app.route("/home/search", methods=["GET"])
 def search():
   if g.user is None:
-    return redirect(url_for('index'))
+    return redirect(url_for('logout'))
 
   global db
   limit = 50
@@ -184,7 +195,59 @@ def search():
 
   return render_template("search.html", page=page, index=index, books=books, params=params, urls=urls)
 
-@app.route("/home/book/<int:id>", methods=["GET"])
-def book(id):
-  pass
+@app.route("/home/book/<int:book_id>", methods=["GET", "POST"])
+def book(book_id):
+  if g.user is None:
+    return redirect(url_for('logout'))
+
+  # if request.method == "POST":
+  #   # TODO: Create review functionality
+  #   reader_id = g.user.id
+  #   rating = request.form.get("rating")
+  #   content = request.form.get("content", "")
+
+  #   referrer = request.referrer
+  #   if referrer is None or referrer == "":
+  #     referrer = url_for('index')
+  #   return render_template("success.html", message="Review submitted successfully!", referrer=referrer)
+
+  global db
+
+  sql = "SELECT * FROM book WHERE id = :book_id;"
+  book = db.execute(sql, {"book_id": book_id}).fetchone()
+
+  sql = (
+    "SELECT reader_id, username, rating, content"
+    " FROM reader JOIN review ON reader.id = review.reader_id"
+    " WHERE review.book_id = :book_id;"
+  )
+  reviews_list = list(db.execute(sql, {"book_id": book_id}))
+  canSubmitReview = True
+  for review in iter(reviews_list):
+    if review.reader_id == g.user.id:
+      canSubmitReview = False
+      break
+
+  res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"isbns": book.isbn, "key": "MPpdcei0urqQdEG2swSWdQ"})
+  goodreads_stats = {}
+  try:
+    book_json = res.json()["books"][0]
+    goodreads_stats = {}
+    goodreads_stats["work_ratings_count"] = book_json["work_ratings_count"]
+    goodreads_stats["average_rating"] = book_json["average_rating"]
+  except json.decoder.JSONDecodeError:
+    goodreads_stats = None
+
+  referrer = request.referrer
+  reviews = iter(reviews_list)
+  
+  if referrer is not None and url_for("search") in referrer:
+    if goodreads_stats is None:
+      return render_template("book.html", referrer=referrer, book=book, reviews=reviews, canSubmitReview=canSubmitReview)
+    return render_template("book.html", referrer=referrer, book=book, goodreads_stats=goodreads_stats, reviews=reviews, canSubmitReview=canSubmitReview)
+  else:
+    if goodreads_stats is None:
+      return render_template("book.html", book=book, reviews=reviews, canSubmitReview=canSubmitReview)
+    return render_template("book.html", book=book, goodreads_stats=goodreads_stats, reviews=reviews, canSubmitReview=canSubmitReview)
+
 
