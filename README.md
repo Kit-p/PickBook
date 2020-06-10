@@ -55,6 +55,7 @@ It verifies account duplication or invalid credentials by `application.py`.
 - Users can register with username and password
 - Users can login with a username and password
 - Users logged in are redirected to `home.html`
+- Duplicated account or invalid credentials handled
 
 **`home.html`**  
 This is the home page after user logged in.  
@@ -81,4 +82,11 @@ It contains reviews written for the specific book.
 Users can write and submit new review here.  
 It contains Goodreads data for the specific book.  
 *----------Tasks Accomplished----------*  
+- Display title, author, publication year and ISBN of book
+- Display book reviews by all users
+- Display statistics from *Goodreads*
+- Users logged in can submit reviews
+  - including a rating scale of 1 to 5
+  - including a text segment
+  - Constraint of 1 review per book per user handled
 

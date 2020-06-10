@@ -22,7 +22,7 @@ Success - PickBook
 {% block body %}
 <div class="container">
   <h1>{{ message }}</h1>
-  <h1 class="mb-5">Welcome, <b>{{ username }}</b>!</h1>
+  <h1 class="mb-5">{{ greeting }}, <b>{{ username }}</b>!</h1>
   <a href="{{ referrer }}" class="btn btn-lg btn-primary btn-block mr-5 mt-5" role="button">Back to previous page</a>
 </div>
 {% endblock %}

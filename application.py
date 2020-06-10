@@ -70,7 +70,7 @@ def register():
   referrer = request.referrer
   if referrer is None or referrer == "":
     referrer = url_for('index')
-  return render_template("success.html", message="Registration Successful!", username=username, referrer=referrer)
+  return render_template("success.html", message="Registration Successful!", greeting="Welcome", username=username, referrer=referrer)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -199,22 +199,8 @@ def search():
 def book(book_id):
   if g.user is None:
     return redirect(url_for('logout'))
-
-  # if request.method == "POST":
-  #   # TODO: Create review functionality
-  #   reader_id = g.user.id
-  #   rating = request.form.get("rating")
-  #   content = request.form.get("content", "")
-
-  #   referrer = request.referrer
-  #   if referrer is None or referrer == "":
-  #     referrer = url_for('index')
-  #   return render_template("success.html", message="Review submitted successfully!", referrer=referrer)
-
+  
   global db
-
-  sql = "SELECT * FROM book WHERE id = :book_id;"
-  book = db.execute(sql, {"book_id": book_id}).fetchone()
 
   sql = (
     "SELECT reader_id, username, rating, content"
@@ -227,6 +213,27 @@ def book(book_id):
     if review.reader_id == g.user.id:
       canSubmitReview = False
       break
+
+  if request.method == "POST":
+    if canSubmitReview:
+      reader_id = g.user.id
+      rating = request.form.get("rating")
+      content = request.form.get("content", "")
+
+      sql = "INSERT into review (reader_id, book_id, rating, content) VALUES (:reader_id, :book_id, :rating, :content);"
+      db.execute(sql, {"reader_id": reader_id, "book_id": book_id, "rating": rating, "content": content})
+      db.commit()
+
+      username = g.user.username
+      referrer = request.referrer
+      if referrer is None or referrer == "":
+        referrer = url_for('index')
+      return render_template("success.html", message="Review submitted successfully!", greeting="Congratulations", username=username, referrer=referrer)
+    else: # Impossible to happen
+      return render_template("error.html", message="You have already submitted a review before!", referrer=referrer)
+
+  sql = "SELECT * FROM book WHERE id = :book_id;"
+  book = db.execute(sql, {"book_id": book_id}).fetchone()
 
   res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"isbns": book.isbn, "key": "MPpdcei0urqQdEG2swSWdQ"})
   goodreads_stats = {}
