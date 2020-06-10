@@ -3,4 +3,4 @@ Flask-Session
 psycopg2-binary
 SQLAlchemy
 requests
-json
+gunicorn

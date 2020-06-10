@@ -2,7 +2,8 @@ import json
 import os
 
 import requests
-from flask import Flask, g, redirect, render_template, request, session, url_for
+from flask import (Flask, g, jsonify, redirect, render_template, request,
+                   session, url_for)
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -257,4 +258,43 @@ def book(book_id):
       return render_template("book.html", book=book, reviews=reviews, canSubmitReview=canSubmitReview)
     return render_template("book.html", book=book, goodreads_stats=goodreads_stats, reviews=reviews, canSubmitReview=canSubmitReview)
 
+@app.route("/api/<isbn>", methods=["GET"])
+def api(isbn):
+  global db
 
+  sql = "SELECT * FROM book WHERE isbn = :isbn"
+  books = db.execute(sql, {"isbn": isbn})
+  if books.rowcount == 0:
+    return jsonify({"error": "Invalid ISBN"}), 404
+
+  book = books.fetchone()
+
+  api_json = {
+    "title": book.title,
+    "author": book.author,
+    "year": book.year,
+    "isbn": book.isbn
+  }
+  
+  sql = (
+    "SELECT COUNT(rating) AS review_count, ROUND(AVG(rating)::numeric, 2)::float8 AS average_score"
+    " FROM review"
+    " WHERE book_id = :book_id"
+  )
+  reviews = db.execute(sql, {"book_id": book.id})
+
+  review = reviews.fetchone()
+  api_json["review_count"] = review.review_count
+  api_json["average_score"] = review.average_score
+
+  if review.review_count == 0:
+    api_json["average_score"] = 0
+    return jsonify(api_json)
+
+  return jsonify(api_json)
+
+
+
+if __name__ == "__main__":
+  port = int(os.getenv("PORT", "5000"))
+  app.run(host="0.0.0.0", port=port, debug=True)

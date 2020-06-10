@@ -8,6 +8,8 @@ Kit-p
 
 # Description
 
+App deployed at: https://cs50-wpjspy-project1.herokuapp.com/
+
 This project intends to build a web application that allows users to search for and write reviews for books. It will contain log-in system and be connected with database, while also providing public API access methods.
 
 # Objectives
@@ -15,7 +17,7 @@ This project intends to build a web application that allows users to search for 
 1. Use SQL, Python, and HTML to create a web application.
 2. Make use of tools like SQLAlchemy, Flask, and Jinja2 to facilitate functionality.
 3. Practise using database, back-end web server, Git and GitHub.
-4. Creating API access for the web application.
+4. Providing API access for the web application.
 
 # Files
 
@@ -72,9 +74,9 @@ This is the page displaying search results.
 It links users to specific book details page.  
 Users can navigate between result pages.  
 *----------Tasks Accomplished----------*  
-- Display search results
-- Link users to specific book page
-- Handles all combination of search queries
+- Displayed search results
+- Linked users to specific book page
+- Handled all combination of search queries
 
 **`book.html`**  
 This is the page displaying book details.  
@@ -82,11 +84,32 @@ It contains reviews written for the specific book.
 Users can write and submit new review here.  
 It contains Goodreads data for the specific book.  
 *----------Tasks Accomplished----------*  
-- Display title, author, publication year and ISBN of book
-- Display book reviews by all users
-- Display statistics from *Goodreads*
+- Displayed title, author, publication year and ISBN of book
+- Displayed book reviews by all users
+- Displayed statistics from *Goodreads*
 - Users logged in can submit reviews
-  - including a rating scale of 1 to 5
-  - including a text segment
+  - Including a rating scale of 1 to 5
+  - Including a text segment
   - Constraint of 1 review per book per user handled
 
+**`application.py`**  
+This is the Flask app.  
+It contains all the code for supporting the functionalities listed above.  
+It connects to the postgreSQL database and handle data querying.  
+It provides API access at route `/api/<isbn>`.  
+*----------Tasks Accomplished----------*  
+- Provided API access of book data in `JSON` format
+- Returned `404` error for invalid ISBN
+- Constraint of raw SQL only (no ORM used)
+
+**`requirements.txt`**  
+This is a list of Python packages required to run the Flask app.  
+*----------Tasks Accomplished----------*  
+- Listed all package requirements
+
+**`README.md`**  
+This is the current file.  
+It includes brief description of the project and each file.  
+*----------Tasks Accomplished----------*  
+- Described project
+- Described each file
