@@ -113,3 +113,9 @@ It includes brief description of the project and each file.
 *----------Tasks Accomplished----------*  
 - Described project
 - Described each file
+
+# Resources
+
+Heroku (database & app): https://www.heroku.com/  
+Adminer (database management): https://adminer.cs50.net/  
+Goodreads (api): https://www.goodreads.com/api  
