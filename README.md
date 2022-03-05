@@ -8,7 +8,7 @@ Kit-p
 
 # Description
 
-App deployed at: https://cs50-wpjspy-project1.herokuapp.com/
+App deployed at: https://pickbook-kitp.herokuapp.com/
 
 This project intends to build a web application that allows users to search for and write reviews for books. It will contain log-in system and be connected with database, while also providing public API access methods.
 
