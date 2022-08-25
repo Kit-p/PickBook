@@ -8,7 +8,8 @@ Kit-p
 
 # Description
 
-App deployed at: https://pickbook-kitp.herokuapp.com/
+~~App deployed at: https://pickbook-kitp.herokuapp.com/~~  
+App no longer deployed due to the recent Heroku policy changes, i.e., removing the free tier Heroku-18 stack.
 
 This project intends to build a web application that allows users to search for and write reviews for books. It will contain log-in system and be connected with database, while also providing public API access methods.
 
@@ -116,6 +117,6 @@ It includes brief description of the project and each file.
 
 # Resources
 
-Heroku (database & app): https://www.heroku.com/  
+~~Heroku (database & app): https://www.heroku.com/~~  
 Adminer (database management): https://adminer.cs50.net/  
 Goodreads (api): https://www.goodreads.com/api  
